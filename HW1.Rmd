@@ -60,15 +60,40 @@ length(my_seq)
 
 4. Define the logical values of |, &, and !A.
 
+`|` = OR  
+`&` = AND  
+`!A` = NOT (or negation)
+
+*These are logical operators used to combine or negate logical expressions, which result in TRUE or FALSE values.*
+
+
 
 5. How do you tell R that you are dealing with a string variable?
+
+*Typically, I'd tell R that I'm dealing with a string variable by enclosing the text in quotes (i.e. "x").*
+
 
 
 6. How do you represent a value that is Not Available or Missing in R?
 
+*Typically, Not Available or Missing values are represented by NA.*
+
+
 
 7. Create a vector of 250 draws from a standard normal distribution.
+```{r}
+my_vector <- rnorm(250)
+my_vector
+```
+
 
 
 8. Create the following vector: 1,4,3,4,2,NA,5,NA,4,5,2,NA. Assign the vector to a variable of your choice. Pull the NA values from that vector into a new vector and output that vector.
+
+```{r}
+v <- c(1,4,3,4,2,NA,5,NA,4,5,2,NA)
+v_na <- v[is.na(v)]
+v_na
+```
+
 
