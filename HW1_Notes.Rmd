@@ -1,0 +1,120 @@
+---
+title: "HW1_Notes"
+author: "Debi Gonzalez"
+date: "2025-09-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Lesson #2
+> getwd()
+[1] "/Users/debig/Documents/Psych Research 2025/Quant_HW"
+
+> ls()
+[1] "my_div"  "my_sqrt" "x"       "y"       "z"    
+
+> list.files()
+[1] "HW1.html"       "HW1.Rmd"        "Quant_HW.Rproj"
+dir.create("testdir")
+Set working directory: > setwd("testdir")
+
+Create new file within working directory: > file.create("mytest.R")
+Check files in working directory: > list.files()
+[1] "mytest.R"
+
+> file.exists("mytest.R")
+[1] TRUE
+
+
+> file.info("mytest.R")
+         size isdir mode               mtime               ctime
+mytest.R    0 FALSE  644 2025-09-04 14:47:33 2025-09-04 14:47:39
+                       atime uid gid uname grname
+mytest.R 2025-09-04 14:47:33 501  20 debig  staff
+
+Changing File name: > file.rename("mytest.R","mytest2.R")
+[1] TRUE
+
+Making a copy: > file.copy("mytest2.R","mytest3.R")
+[1] TRUE
+
+Provide the relative path to the file "mytest3.R" by using file.path().
+
+> file.path("mytest3.R")
+[1] "mytest3.R"
+
+You can use file.path to construct file and directory paths that are
+| independent of the operating system your R code is running on. Pass 'folder1'
+| and 'folder2' as arguments to file.path to make a platform-independent
+| pathname.
+
+> file.path('folder1','folder2')
+[1] "folder1/folder2"
+
+| Create a directory in the current working directory called "testdir2" and a
+| subdirectory for it called "testdir3", all in one command by using
+| dir.create() and file.path().
+
+> dir.create(file.path('testdir2', 'testdir3'), recursive = TRUE)
+
+Go back to your original working directory using setwd(). (Recall that we
+| created the variable old.dir with the full path for the orginal working
+| directory at the start of these questions.)
+> setwd(old.dir)
+
+  |================================================================       |  90%
+| It is often helpful to save the settings that you had before you began an
+| analysis and then go back to them at the end. This trick is often used within
+| functions; you save, say, the par() settings that you started with, mess
+| around a bunch, and then set them back to the original values at the end. This
+| isn't the same as what we have done here, but it seems similar enough to
+| mention.
+
+
+Lesson 3: Vectors
+
+| Pull up the documentation for `:` now.
+
+> ?`:`
+
+
+> seq(1,20)
+> seq(0, 10, by=0.5)
+
+> my_seq <- seq(5, 10, length=30)
+
+Checking length:
+> length(my_seq)
+
+Let's pretend we don't know the length of my_seq, but we want to generate a
+| sequence of integers from 1 to N, where N represents the length of the my_seq
+| vector. In other words, we want a new vector (1, 2, 3, ...) that is the same
+| length as my_seq.
+
+Three different ways of doing this:
+> 1:length(my_seq)
+> seq(along.with = my_seq)
+> seq_along(my_seq)
+
+| If we're interested in creating a vector that contains 40 zeros, we can use
+| rep(0, times = 40). Try it out.
+
+> rep(0, times=40)
+ [1] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[39] 0 0
+
+| If instead we want our vector to contain 10 repetitions of the vector (0, 1,
+| 2), we can do rep(c(0, 1, 2), times = 10). Go ahead.
+
+> rep(c(0,1,2), times=10)
+ [1] 0 1 2 0 1 2 0 1 2 0 1 2 0 1 2 0 1 2 0 1 2 0 1 2 0 1 2 0 1 2
+ 
+ Finally, let's say that rather than repeating the vector (0, 1, 2) over and
+| over again, we want our vector to contain 10 zeros, then 10 ones, then 10
+| twos. We can do this with the `each` argument. Try rep(c(0, 1, 2), each = 10).
+
+> rep(c(0,1,2), each=10)
+ [1] 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2

@@ -1,0 +1,74 @@
+---
+title: "HW1"
+author: "Debi Gonzalez"
+date: "2025-09-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(swirl)
+```
+
+
+For example...
+###
+> library("swirl")
+| Hi! Type swirl() when you are ready to begin.
+> swirl()
+| Welcome to swirl! Please sign in. If you've been here
+| before, use the same name as you did then. If you are new,
+| call yourself something unique.
+What shall I call you?
+| Would you like to continue with one of these lessons?
+1: R Programming Basic Building Blocks
+2: No. Let me start something new.
+Selection: 1
+### Work through the first five lessons (Basic Building Blocks, Workspace and Files, Sequences of Numbers, Vectors, Missing Values). Then answer the following questions. Show work (copy the R commands) for each question that requires output from R.
+
+
+1. Please define a vector of the first ten even numbers after zero (e.g., 2, 4, 6...). First print it to the screen, and then save it in a variable of your choice. Take the square root of that variable and save the result to a new variable name of your choice.
+
+```{r}
+c(2,4,6,8,10,12,14,16,18,20)
+
+x <- c(2,4,6,8,10,12,14,16,18,20)
+
+sqrt(x)
+
+y <- sqrt(x)
+```
+
+
+2. Find your directory and list all objects in the directory.
+```{r}
+getwd()
+ls()
+```
+
+
+3. Print a sequence of 50 numbers, incremented by .7 at each step. Use a simple command to show the length of the sequence.
+```{r}
+my_seq <- seq(0, by=0.7, length=50)
+
+print(my_seq)
+
+length(my_seq)
+```
+
+
+
+4. Define the logical values of |, &, and !A.
+
+
+5. How do you tell R that you are dealing with a string variable?
+
+
+6. How do you represent a value that is Not Available or Missing in R?
+
+
+7. Create a vector of 250 draws from a standard normal distribution.
+
+
+8. Create the following vector: 1,4,3,4,2,NA,5,NA,4,5,2,NA. Assign the vector to a variable of your choice. Pull the NA values from that vector into a new vector and output that vector.
+
