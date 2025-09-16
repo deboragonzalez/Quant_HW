@@ -1,0 +1,48 @@
+---
+title: "Homework 2"
+author: "Debi Gonzalez"
+date: "2025-09-16"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Work through the next two lessons (Subsetting Vectors; Matrices and Data
+Frames). Then answer the following questions. Show work (copy the R commands) for each question that requires output from R.
+
+1. Create the following vector: 1,4,3,4,2,NA,5,NA,4,5,2,NA. Assign the vector to a variable of your choice. Please pull from x all values that are not “NA” and save those to a new variable called ‘nonas’. Then type print(nonas) and report the result.
+
+```{r}
+# 1. Create the vector and assign to a variable (call it x)
+x <- c(1, 4, 3, 4, 2, NA, 5, NA, 4, 5, 2, NA)
+
+# 2. Pull all values that are not NA and assign to 'nonas'
+nonas <- x[!is.na(x)]
+
+# 3. Print
+print(nonas)
+```
+
+
+2. Request from x only values that are both non-missing AND greater than zero.
+Print the result here.
+
+
+3. Subset the 9,12,15,22 elements of x.
+
+
+4. Create an empty matrix with 5 rows and 4 columns.
+
+
+5. Create a matrix with data = c(1:40), with 4 rows and 10 columns.
+
+
+6. Create labels for the columns of your matrix. (Hint: Remember to tell R the labels are strings)
+
+
+7. Using the colnames() function, add those column labels to your matrix.
+
+
+8. This one is a little tricky, so please ask if you have questions. The purpose of it is to show you an annoying issue with R. Using either base R or ggplot2, please make a barplot from the ‘iris’ data. Use Species to predict Sepal Length. In a bit of a twist, please order the barplot from (left to right) highest sepal length to shortest sepal length.
