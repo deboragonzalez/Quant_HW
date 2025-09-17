@@ -135,3 +135,22 @@ print(data_mat)
 ```
 
 8. This one is a little tricky, so please ask if you have questions. The purpose of it is to show you an annoying issue with R. Using either base R or ggplot2, please make a barplot from the ‘iris’ data. Use Species to predict Sepal Length. In a bit of a twist, please order the barplot from (left to right) highest sepal length to shortest sepal length.
+
+```{r}
+
+# Call the data, 
+ggplot(iris, 
+       aes(x = reorder(Species, -Sepal.Length, FUN = mean), y = Sepal.Length)) +
+  # setting x and y axis. Selecting Species as a factor for X, calculating the mean length for each species, and reordering it (this ensures it's going from highest to lowest mean).
+  stat_summary(fun = mean, geom = "bar", fill = "lightblue") +
+  # Computing summary statistic for each x-group (each species) --> the mean of Sepal.Length. Then we select the plot to be a bar plot reflecting the computed mean. Then, selecting color of the bars.
+  labs(
+    x = "Species",
+    y = "Mean Sepal Length",
+    title = "Mean Sepal Length by Species (Highest to Lowest)") +
+  # labeling axis and title
+  theme_minimal()
+# adding theme for aesthetic purposes
+
+```
+
