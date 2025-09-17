@@ -138,19 +138,24 @@ print(data_mat)
 
 ```{r}
 
+# Exploring my data
+str(iris)
+iris$Species
+iris[,5]
+
 # Call the data, 
 ggplot(iris, 
+      # Setting x and y axis. Selecting Species as a factor for X, calculating the mean length for each species, and reordering it (this ensures it's going from highest to lowest mean).
        aes(x = reorder(Species, -Sepal.Length, FUN = mean), y = Sepal.Length)) +
-  # setting x and y axis. Selecting Species as a factor for X, calculating the mean length for each species, and reordering it (this ensures it's going from highest to lowest mean).
-  stat_summary(fun = mean, geom = "bar", fill = "lightblue") +
   # Computing summary statistic for each x-group (each species) --> the mean of Sepal.Length. Then we select the plot to be a bar plot reflecting the computed mean. Then, selecting color of the bars.
+  stat_summary(fun = mean, geom = "bar", fill = "lightblue") +
+  # Labeling axis and title
   labs(
     x = "Species",
     y = "Mean Sepal Length",
     title = "Mean Sepal Length by Species (Highest to Lowest)") +
-  # labeling axis and title
+  # Adding theme for aesthetic purposes
   theme_minimal()
-# adding theme for aesthetic purposes
 
 ```
 
