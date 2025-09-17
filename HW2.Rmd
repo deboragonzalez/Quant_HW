@@ -7,6 +7,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
 ```
 
 ### Work through the next two lessons (Subsetting Vectors; Matrices and Data
@@ -30,19 +31,107 @@ print(nonas)
 Print the result here.
 
 
+```{r echo = TRUE}
+
+# Adding the x>0 condition
+
+x[!is.na(x) & (x>0)]
+
+# We can prob call this positive_nonas
+
+positive_nonas <- x[!is.na(x) & (x>0)]
+print(positive_nonas)
+
+```
+
+
+```{r}
+
+# testing my theory that nonas is technically already compliant with this request
+print(nonas > 0)
+nonas
+
+```
+
+
 3. Subset the 9,12,15,22 elements of x.
+
+```{r}
+
+# Subsetting elements 9, 12, 15, 22... there are no elements 15 and 22 in our vector, so I expect NAs for those elements.
+
+subset_x <- x[c(9, 12, 15, 22)]
+print(subset_x)
+
+```
 
 
 4. Create an empty matrix with 5 rows and 4 columns.
 
+```{r}
+
+# Creating an empty matrix
+
+empty_matrix <- matrix(nrow = 5, ncol = 4)
+
+# Confirming output of empty matrix
+print(empty_matrix)
+
+```
+
 
 5. Create a matrix with data = c(1:40), with 4 rows and 10 columns.
+
+```{r}
+
+data_mat <- matrix(data = c(1:40), nrow = 4, ncol = 10)
+
+print(data_mat)
+
+```
+
 
 
 6. Create labels for the columns of your matrix. (Hint: Remember to tell R the labels are strings)
 
 
+```{r}
+# Creating the labels only
+
+column_labels <- paste0("C", seq_len(ncol(data_mat)))
+
+# I realized that this was not asking me to add it to the matrix just yet after I read the next question.
+```
+
 7. Using the colnames() function, add those column labels to your matrix.
 
+```{r}
+# Adding the column labels to the matrix
+
+colnames(data_mat) <- column_labels
+print(data_mat)
+```
+
+
+
+Other ways of adding column labels more directly:
+```{r}
+# Labeling the columns C1, C2, ..., C10, manually. Column names are in quotes to note that the labels are strings.
+colnames(data_mat) <- c("C1","C2","C3","C4","C5",
+                        "C6","C7","C8","C9","C10")
+
+# Confirming all looks good
+print(data_mat)
+```
+
+
+```{r}
+# Another way of doing this with a bit less code
+
+colnames(data_mat) <- paste0("C", seq_len(ncol(data_mat)))
+
+print(data_mat)
+
+```
 
 8. This one is a little tricky, so please ask if you have questions. The purpose of it is to show you an annoying issue with R. Using either base R or ggplot2, please make a barplot from the ‘iris’ data. Use Species to predict Sepal Length. In a bit of a twist, please order the barplot from (left to right) highest sepal length to shortest sepal length.
