@@ -1,0 +1,49 @@
+---
+title: "HW3"
+author: "Debi Gonzalez"
+date: "2025-09-19"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Work through the Logic lesson, and the first half of the Functions lesson (go to 50%). Then answer the following questions. Show work (copy the R commands) for each question that requires output from R.
+
+1.	List all of the logical operators you learned in the “Logic” section and define each.
+
+
+2.	Find the opposite of whether 3 == 4.
+
+
+3.	Evaluate !(7 > 6) & (7==7) | (6==5)
+
+
+4.	Which is evaluated first for each pair below?
+
+  a.	&  |
+  b.	&&  |
+  c.	&& ||
+  d.	& ||
+
+5.	What does the xor() function do?
+
+
+6.	Tell R to tell you the date.
+
+
+7.	Calculate the mean of 3 numbers using a simple R function that comes with R.
+
+
+8.	Print the output of: boring_function('My first function!')
+
+
+9.	Write the function my_mean from the tutorial and print your function here.
+
+
+10.	After writing your function, provide the output of the following:
+  
+  a.	remainder(4, div = 2)
+
+  b.	remainder(4, div = 10)
