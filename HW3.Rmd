@@ -16,8 +16,23 @@ knitr::opts_chunk$set(echo = TRUE)
 
 2.	Find the opposite of whether 3 == 4.
 
+```{r}
+
+# Option 1
+3 != 4
+
+# Option 2
+!(3 == 4)
+```
+
 
 3.	Evaluate !(7 > 6) & (7==7) | (6==5)
+```{r, echo=True}
+!(7 > 6) & (7==7) | (6==5)
+# First statement is false, it's the negation of the TRUE statement in paranthesis.
+# second statement is true
+# Third statemenet is false. 
+```
 
 
 4.	Which is evaluated first for each pair below?
@@ -28,15 +43,46 @@ knitr::opts_chunk$set(echo = TRUE)
   d.	& ||
 
 5.	What does the xor() function do?
-
+In R, the xor() function performs a logical exclusive OR operation. It takes two logical vectors or individual logical values as input and returns TRUE if exactly one of the inputs is TRUE, and FALSE otherwise.
 
 6.	Tell R to tell you the date.
+```{r, echo=True}
+Sys.Date()
+```
 
 
 7.	Calculate the mean of 3 numbers using a simple R function that comes with R.
+```{r}
+
+# To make this exercise fun, I'm creating a vector of 3 numbers randomly selected between 1 and 100. Then, I'm printing my vector to see what we are working with and using the mean() function.
+
+vector <- sample(1:100, 3, replace = TRUE)
+print(vector)
+mean(vector)
+```
 
 
 8.	Print the output of: boring_function('My first function!')
+
+```{r}
+
+boring_function <- function(x) {x}
+boring_function('My first function!')
+
+
+```
+```{r}
+
+# Playing around with functions for my own practice.
+
+example_func <- function(y, z) {
+  print(y)
+  print(z)
+  y/z
+}
+
+example_func(y=2, z=4)
+```
 
 
 9.	Write the function my_mean from the tutorial and print your function here.
