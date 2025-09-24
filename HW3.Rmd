@@ -47,6 +47,7 @@ In R, the xor() function performs a logical exclusive OR operation. It takes two
 
 6.	Tell R to tell you the date.
 ```{r, echo=True}
+# getting today's date
 Sys.Date()
 ```
 
@@ -87,6 +88,13 @@ example_func(y=2, z=4)
 
 9.	Write the function my_mean from the tutorial and print your function here.
 
+```{r}
+my_mean <- function(x) {sum(x)/length(x)}
+
+values <- c(1,4,5,3,4,5)
+
+my_mean(values)
+```
 
 10.	After writing your function, provide the output of the following:
   
