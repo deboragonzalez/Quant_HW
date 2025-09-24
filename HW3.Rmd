@@ -14,19 +14,25 @@ knitr::opts_chunk$set(echo = TRUE)
 1.	List all of the logical operators you learned in the “Logic” section and define each.
 
 These return logical values like TRUE or FALSE.
-== Equal to – checks if two values are exactly equal.
-!= Not equal to – checks if two values are different.
-< Less than.
-<= Less than or equal to.
-> Greater than.
->= Greater than or equal to.
+
+== Equal to – checks if two values are exactly equal. != Not equal to – checks if two values are different.
+
+< Less than. <= Less than or equal to. > Greater than. >= Greater than or equal to.
+
 
 Logical Operators
+
 ! Logical NOT - negates a logical value
+
 & Element-wise AND; it's used to evaluate AND across a vector.
+
 && Short-circuit AND; it evaluates only the first element of a vector and returns a single TRUE or FALSE.
-| Element-wise OR; it's used to evaluate OR across a vector.
+
+  | Element-wise OR; it's used to evaluate OR across a vector.
+
+
 || Short-circuit OR; it evaluates only the first element of a vector and returns a single TRUE or FALSE.
+
 
 2.	Find the opposite of whether 3 == 4.
 
@@ -41,39 +47,33 @@ Logical Operators
 
 
 3.	Evaluate !(7 > 6) & (7==7) | (6==5)
-```{r, echo=True}
+```{r, echo = TRUE}
 !(7 > 6) & (7==7) | (6==5)
-# First statement is false, it's the negation of the TRUE statement in paranthesis.
-# second statement is true
-# Third statement is false. 
-# Final statement is ...
+# First statement is FALSE bc it's the negation of the TRUE statement in parenthesis.
+# Second statement is TRUE
+# Third statement is FALSE
+# AND before OR gives us FALSE & TRUE, which is FALSE.
+# OR statement is then FALSE.
+# Final statement is false.
 ```
 
 
 4.	Which is evaluated first for each pair below?
 
   a.	&  | --> & is evaluated first
-  b.	&&  | --> | is evaluated first
+  b.	&&  | --> && is evaluated first
   c.	&& || --> && is evaluated first
-  d.	& || --> & is evaluate first
+  d.	& || --> & is evaluated first
   
-  
-```{r}
-# My reference hierarchy based on ?syntax
 
-&    (element-wise AND)
-|    (element-wise OR)
-&&   (short-circuit AND)
-||   (short-circuit OR)
-
-```
-  
+Hierarchy: AND before OR according to swirl.
 
 5.	What does the xor() function do?
+
 In R, the xor() function performs a logical exclusive OR operation. It takes two logical vectors or individual logical values as input and returns TRUE if exactly one of the inputs is TRUE, and FALSE otherwise.
 
 6.	Tell R to tell you the date.
-```{r, echo=True}
+```{r, echo = TRUE}
 # getting today's date
 Sys.Date()
 ```
@@ -120,7 +120,11 @@ example_func(y=2, z=4)
 ```{r}
 my_mean <- function(x) {sum(x)/length(x)}
 
-values <- c(1,4,5,3,4,5)
+print(my_mean)
+
+# Playing with my function. Giving it a vector of values and testing it.
+
+values <- c(4, 5, 10)
 
 my_mean(values)
 ```
@@ -128,6 +132,9 @@ my_mean(values)
 10.	After writing your function, provide the output of the following:
 
 ```{r}
+
+# Taking my remainder function from swirl lesson:
+
 remainder <- function(num, divisor = 2) {
   num %% divisor 
   
@@ -140,6 +147,9 @@ remainder <- function(num, divisor = 2) {
 remainder(4)
 
 # We can just put 4 as num since default divisor is 2.
+
+# Another way:
+remainder(4, div = 2)
 ```
   
 
