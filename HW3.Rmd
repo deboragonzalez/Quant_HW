@@ -13,6 +13,20 @@ knitr::opts_chunk$set(echo = TRUE)
 
 1.	List all of the logical operators you learned in the “Logic” section and define each.
 
+These return logical values like TRUE or FALSE.
+== Equal to – checks if two values are exactly equal.
+!= Not equal to – checks if two values are different.
+< Less than.
+<= Less than or equal to.
+> Greater than.
+>= Greater than or equal to.
+
+Logical Operators
+! Logical NOT - negates a logical value
+& Element-wise AND; it's used to evaluate AND across a vector.
+&& Short-circuit AND; it evaluates only the first element of a vector and returns a single TRUE or FALSE.
+| Element-wise OR; it's used to evaluate OR across a vector.
+|| Short-circuit OR; it evaluates only the first element of a vector and returns a single TRUE or FALSE.
 
 2.	Find the opposite of whether 3 == 4.
 
@@ -31,16 +45,29 @@ knitr::opts_chunk$set(echo = TRUE)
 !(7 > 6) & (7==7) | (6==5)
 # First statement is false, it's the negation of the TRUE statement in paranthesis.
 # second statement is true
-# Third statemenet is false. 
+# Third statement is false. 
+# Final statement is ...
 ```
 
 
 4.	Which is evaluated first for each pair below?
 
-  a.	&  |
-  b.	&&  |
-  c.	&& ||
-  d.	& ||
+  a.	&  | --> & is evaluated first
+  b.	&&  | --> | is evaluated first
+  c.	&& || --> && is evaluated first
+  d.	& || --> & is evaluate first
+  
+  
+```{r}
+# My reference hierarchy based on ?syntax
+
+&    (element-wise AND)
+|    (element-wise OR)
+&&   (short-circuit AND)
+||   (short-circuit OR)
+
+```
+  
 
 5.	What does the xor() function do?
 In R, the xor() function performs a logical exclusive OR operation. It takes two logical vectors or individual logical values as input and returns TRUE if exactly one of the inputs is TRUE, and FALSE otherwise.
@@ -72,6 +99,8 @@ boring_function('My first function!')
 
 
 ```
+
+
 ```{r}
 
 # Playing around with functions for my own practice.
