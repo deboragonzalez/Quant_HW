@@ -126,7 +126,27 @@ my_mean(values)
 ```
 
 10.	After writing your function, provide the output of the following:
+
+```{r}
+remainder <- function(num, divisor = 2) {
+  num %% divisor 
+  
+}
+```
+
   
   a.	remainder(4, div = 2)
+```{r}
+remainder(4)
+
+# We can just put 4 as num since default divisor is 2.
+```
+  
 
   b.	remainder(4, div = 10)
+```{r} 
+
+# We must include both num and divisor bc our divisor is now different from default.
+remainder(4,10)
+```
+
