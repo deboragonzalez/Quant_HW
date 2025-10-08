@@ -1,0 +1,54 @@
+---
+title: "HW4"
+author: "Debi Gonzalez"
+date: "2025-10-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+### Complete the Functions lesson. Then answer the following questions. Show work (copy the R commands) for each question that requires output from R.
+
+Remember, in Swirl you can type info() to see a list of commands you can use to test out code, exit the program etc.
+
+a.	Using the evaluate function you wrote, print the output of the function if you ask for the maximum value of the following: c(1,4,2,4,5,3,5,6). Show the function and the output.
+```{r}
+
+# Creating the function
+evaluate <- function(func, dat){
+  func(dat)
+}
+
+# Using the evaluate function to get the max value of the provided vector
+
+evaluate(max, c(1,4,2,4,5,3,5,6))
+```
+
+
+b.	Using your evaluate function, pass an anonymous function to return the last element of the vector c(1,2,3).
+c.	Write something using the paste() function and save to a variable.
+d.	Pass that variable to the telegram function you wrote as part of the exercise.
+e.	Show the madlibs function and paste the output here.
+f.	Paste your binary operator function here.
+
+
+For this section of the homework, we’re going to state the null and alternate hypotheses for a series of questions. Here is an example:
+
+Example: A researcher is interested in determining whether the average score on the WAIS IQ test for FIU undergraduates is different from the average for the population, which is 100.
+
+Answer: 
+H0:  = 100
+HA:  ≠ 100
+
+1.	A woman playing craps at the casino thinks both of the dice she is rolling are biased. She wants to roll a two (i.e., a one on each six-sided die, which are independent). State the null and alternate hypothesis she would need to conduct a test of the bias.
+
+2.	The woman is sick of craps and goes to play the slot machine. She wants to get three sevens on the spin, but she thinks the machine is biased. There are 15 images on each of the spinners, and there are three spinners, which act independently. State the null and alternate hypothesis she would need to conduct a test of the bias.
+
+3.	Finding that she can’t win at the slot machine, the woman goes to the poker table. The game they are playing is Texas Hold’Em. In this game, each player is dealt two “hole” cards. At the end of the betting rounds, there will be five more cards on the table. Out of the seven cards (table and hole cards), the player will make the best five-card hand.
+
+
+She has Ace-King of clubs for her hole cards, and she needs one more club to make a flush. There are 13 clubs in the deck. There are two clubs on the table face up, and two additional non-club cards. On the last (fifth) table card, she does not get a club and loses all of her money. The woman leaves the casino thinking the card game was fixed. State the null and alternate hypothesis she would need to conduct a test of the bias (hint: start with the probability of drawing a club on the last card). 
+
