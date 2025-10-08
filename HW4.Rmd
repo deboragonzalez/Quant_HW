@@ -93,6 +93,8 @@ f.	Paste your binary operator function here.
   paste(left, right, sep = " ")
 }
 
+# Showing how the binary operator works in practice
+"Good" %p% "job!"
 ```
 
 
