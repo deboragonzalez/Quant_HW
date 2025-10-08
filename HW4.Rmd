@@ -22,6 +22,9 @@ evaluate <- function(func, dat){
   func(dat)
 }
 
+# Showing the function
+evaluate
+
 # Using the evaluate function to get the max value of the provided vector
 
 evaluate(max, c(1,4,2,4,5,3,5,6))
@@ -29,10 +32,68 @@ evaluate(max, c(1,4,2,4,5,3,5,6))
 
 
 b.	Using your evaluate function, pass an anonymous function to return the last element of the vector c(1,2,3).
+
+```{r}
+
+# setting up anonymous function
+evaluate(function(x)
+  # length of vector returns last element
+  {x[length(x)]}, 
+  # vector
+  c(1,2,3))
+```
+
 c.	Write something using the paste() function and save to a variable.
+```{r}
+qc <- paste("practice", "questions", sep = " ")
+print(qc)
+```
+
+
 d.	Pass that variable to the telegram function you wrote as part of the exercise.
+
+```{r}
+
+# Setting up the telegram function
+telegram <- function(...){
+  paste("START", ..., "STOP")
+}
+
+# Passing the qc variable through the telegram function
+telegram(qc)
+```
+
+
 e.	Show the madlibs function and paste the output here.
+
+```{r}
+
+# Setting up mad_libs function from lesson
+mad_libs <- function(...){
+  args <- list(...)
+  place <- args[["place"]]
+  adjective <- args[["adjective"]]
+  noun <- args[["noun"]]
+  paste("News from", place, "today where", adjective, "students took to the streets in protest of the new", noun, "being installed on campus.")
+}
+
+# Showing function
+mad_libs
+
+# Showing output
+mad_libs(place= "Harvard", adjective= "freshmen", noun= "statue")
+
+```
+
 f.	Paste your binary operator function here.
+```{r}
+
+# Binary operator function from the lesson
+"%p%" <- function(left, right){ 
+  paste(left, right, sep = " ")
+}
+
+```
 
 
 For this section of the homework, we’re going to state the null and alternate hypotheses for a series of questions. Here is an example:
