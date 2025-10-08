@@ -106,10 +106,68 @@ HA:  ≠ 100
 
 1.	A woman playing craps at the casino thinks both of the dice she is rolling are biased. She wants to roll a two (i.e., a one on each six-sided die, which are independent). State the null and alternate hypothesis she would need to conduct a test of the bias.
 
+Answer:
+H0: p = 1/36.
+The probability of 2 fair dice independently rolling a 1 at the same time is 1/36.
+
+```{r}
+
+# Multiplying the independent probabilities of rollin a 1 on each die.
+1/6 * 1/6
+```
+
+HA: p ≠ 1/36 
+This would imply that the odds are skewed from expected behavior in the limit. In practical terms, they would only care if p < 1/36 because this would mean a bias against them (not for them).
+
 2.	The woman is sick of craps and goes to play the slot machine. She wants to get three sevens on the spin, but she thinks the machine is biased. There are 15 images on each of the spinners, and there are three spinners, which act independently. State the null and alternate hypothesis she would need to conduct a test of the bias.
+
+```{r}
+
+# Probability of getting a 7 on one spinner
+p7 <- 1/15
+
+# Given spinners act independently, we must multiply the probabilities of each wheel
+p7^3
+
+```
+
+Answer:
+
+H0: p = 0.0002962963
+The probability of getting a triple 7 on a fair slot machine under the conditions described is 0.0002962963 or (1/15)^3.
+
+HA: p ≠ 0.0002962963
+If p differs, we can reject the null and infer that the machine is biased. In practice, this would be biased against her if the p < 0.0002962963.
 
 3.	Finding that she can’t win at the slot machine, the woman goes to the poker table. The game they are playing is Texas Hold’Em. In this game, each player is dealt two “hole” cards. At the end of the betting rounds, there will be five more cards on the table. Out of the seven cards (table and hole cards), the player will make the best five-card hand.
 
 
 She has Ace-King of clubs for her hole cards, and she needs one more club to make a flush. There are 13 clubs in the deck. There are two clubs on the table face up, and two additional non-club cards. On the last (fifth) table card, she does not get a club and loses all of her money. The woman leaves the casino thinking the card game was fixed. State the null and alternate hypothesis she would need to conduct a test of the bias (hint: start with the probability of drawing a club on the last card). 
 
+```{r}
+
+# Situation setup: There are 13 clubs in a 52 card deck.The woman holds 2 clubs (Ace, King clubs). There are 2 clubs and 2 non-club cards visible on the table before the last card is drawn, which means 4 clubs are already known (2 in her hand + 2 on the table).
+
+# Clubs left unseen
+13-4
+
+# All cards left unseen in the deck
+52-(2+4)
+  # 2 in her hand and 4 on the table, so 46
+
+# Probability that the last card is a club is then:
+
+9/46
+
+```
+
+Answer:
+
+H0: p = 0.1956522
+The probability of drawing a club if there is no bias in the dealing of cards, meaning the game is fair.
+
+HA: p ≠ 0.1956522
+The game is biased. In practice, she would care if the game is biased against her (meaning clubs are less likely than expected), which would be p<0.1956522.
+
+Now, poker is not a game you can play alone, so we may need to factor in what cards other players might have. If we learned that her opponent’s cards had one or more clubs, we would adjust the probability based on the number of clubs that remain unseen. 
+Suppose opponent had 1 club → only 8 clubs remain unseen.
