@@ -1,0 +1,173 @@
+---
+title: "Homework 5"
+author: "Debi Gonzalez"
+date: "2025-10-21"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Homework Number 5
+
+We’re going to install a new course.
+
+In R, 
+
+library(swirl)
+install_course("Exploratory_Data_Analysis")
+swirl()
+
+When prompted, ask for a new course and select Exploratory Data Analysis.
+
+Work through 1 – 4 and answer the following questions:
+
+1)	Type play() and load the library(car) and library(ggplot2). Print the first five rows of the mpg data frame. Using the str() command print information about this data frame. Do the same using the dim() command. After that, return to swirl() by typing nxt().
+
+```{r}
+
+# Loading libraries
+library(car)
+library(ggplot2)
+
+# Using the function head() to print the first 5 rows of the mpg data frame.
+head(mpg, 5)
+
+
+# Printing info about data frame
+str(mpg)
+
+dim(mpg)
+```
+
+
+2)	Type play() again. Make a boxplot of mpg$hwy and change the box color to steelblue. Add a horizontal line at 37. Print the command and the plot here.
+
+```{r}
+
+# Creating the boxplot and adding color
+boxplot(mpg$hwy, col="steelblue")
+# Adding the line
+abline(h = 37)
+
+```
+
+
+3)	Make a histogram of mpg$hwy. Add a vertical line at the median, make it any color you want, but make the lineweight about the size of one of the histogram bins. Print the command and the graph here.
+
+```{r}
+
+# Checking my data to identify the median
+summary(mpg$hwy)
+
+# Making the histogram
+hist(mpg$hwy, 
+     col="blue", 
+     # Labeling the graph
+     main = "Histogram of mpg$hwy with Median Line",
+     xlab = "Highway MPG",
+     # Making the bins thinner
+     breaks = 50)
+
+# Adding the vertical line.
+abline(v= median(mpg$hwy), col = "gold", lwd = 10)
+
+
+# Now, going to make the histogram with ggplot instead, which I prefer
+
+# Calculating the median of highway mpg to have ready for my graph
+med <- median(mpg$hwy, na.rm = TRUE)
+
+# Creating the histogram with a vertical line at the median
+ggplot(mpg, aes(x = hwy)) +
+  # I'm adding a binwidth so I can later make my vertical line roughly the same size as my bin width.
+  geom_histogram(binwidth = 1, fill = "blue", color = "black") +
+  # This is the equivalent of the abline, linewidth here is equal to 5 so it's the same size as the bins.
+  geom_vline(xintercept = med, color = "gold", linewidth = 5) +
+  labs(title = "Histogram of mpg$hwy with Median Line",
+       x = "Highway MPG", y = "Frequency")
+
+
+
+```
+
+
+4)	Using the table() command, show information about mpg$hwy.
+
+```{r}
+
+table(mpg$hwy)
+
+```
+
+
+5)	subset()is a command I use a lot. Try subsetting ford cars into its own variable from the mpg$manufacturer variable.
+
+
+```{r}
+
+# Creating my ford cars subset
+ford_cars <- subset(mpg, manufacturer == "ford")
+
+# Checking my variable worked
+head(ford_cars)
+```
+
+6)	Make a scatterplot of the ford variable, plotting $hwy miles-per-gallon on the x-axis, and $cty miles-per-gallon on the y-axis, using model year as the color.
+
+```{r}
+
+plot(ford_cars$hwy, ford_cars$cty, 
+     col = ford_cars$year,
+     main = "Ford Cars: City vs Highway MPG",
+     xlab = "Highway MPG",
+     ylab = "City MPG")
+
+```
+
+
+7)	Add a title to the plot, and save the plot as a pdf. You only need to print the commands here, not the plot.
+
+```{r}
+# Didn't read ahead, so already had the title and axis labels
+
+# Saving plot to a PDF file
+pdf("ford_scatterplot.pdf")
+
+# Recreating the plot
+plot(ford_cars$hwy, ford_cars$cty, 
+     col = ford_cars$year,
+     main = "Ford Cars: City vs Highway MPG",
+     xlab = "Highway MPG",
+     ylab = "City MPG")
+
+# Another way of making the plot
+
+ggplot(ford_cars, aes(x = hwy, y = cty, color = factor(year))) +
+  geom_point(size = 3) +
+  labs(title = "Ford Cars: City vs Highway MPG",
+       x = "Highway MPG",
+       y = "City MPG",
+       color = "Model Year")
+
+# Both versions will print to the PDF
+
+# Close the PDF device
+dev.off()
+
+```
+
+Below, in each made up experiment, perhaps follow the woman on her repeated visits to the casino as she works through her gambling addiction. Be creative! Maybe the casino is fixing the games? Maybe not?
+
+
+1.	A woman playing craps at the casino thinks both of the dice she is rolling are biased. She wants to roll a two (i.e., a one on each six-sided die, which are independent). State the null and alternate hypothesis she would need to conduct a test of the bias, conduct the test (using an experiment you made up, stating briefly the details), and state the conclusion.
+
+2.	The woman is sick of craps and goes to play the slot machine. She wants to get three sevens on the spin, but she thinks the machine is biased. There are 15 images on each of the spinners, and there are three spinners, which act independently. State the null and alternate hypothesis she would need to conduct a test of the bias, conduct the test (using an experiment you made up, stating briefly the details), and state the conclusion.
+
+3.	Finding that she can’t win at the slot machine, the woman goes to the poker table. The game they are playing is Texas Hold’Em. In this game, each player is dealt two “hole” cards. At the end of the betting rounds, there will be five more cards on the table. Out of the seven cards (table and hole cards), the player will make the best five-card hand.
+
+She has Ace-King of clubs for her hole cards, and she needs one more club to make a flush. There are 13 clubs in the deck. There are two clubs on the table face up, and two additional non-club cards. On the last (fifth) table card, she does not get a club and loses all of her money. The woman leaves the casino thinking the card game was fixed. State the null and alternate hypothesis she would need to conduct a test of the bias, conduct the test (using an experiment you made up, stating briefly the details), and state the conclusion. 
+
+
+
