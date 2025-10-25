@@ -47,10 +47,17 @@ dim(mpg)
 ```{r}
 
 # Creating the boxplot and adding color
-boxplot(mpg$hwy, col="steelblue")
+boxplot(mpg$hwy, col="steelblue", main = "Boxplot of Highway MPG", ylab = "Highway MPG")
 # Adding the line
 abline(h = 37)
 
+
+# Creating boxplot in ggplot
+ggplot(mpg, aes(y = hwy)) +
+  geom_boxplot(fill = "steelblue") +
+  geom_hline(yintercept = 37, color = "black") +
+  theme_minimal() +
+  labs(y = "Highway MPG", title = "Boxplot of Highway MPG")
 ```
 
 
@@ -84,7 +91,7 @@ ggplot(mpg, aes(x = hwy)) +
   # I'm adding a binwidth so I can later make my vertical line roughly the same size as my bin width.
   geom_histogram(binwidth = 1, fill = "blue", color = "black") +
   # This is the equivalent of the abline, linewidth here is equal to 5 so it's the same size as the bins.
-  geom_vline(xintercept = med, color = "gold", linewidth = 5) +
+  geom_vline(xintercept = med, color = "gold", linewidth = 6) +
   labs(title = "Histogram of mpg$hwy with Median Line",
        x = "Highway MPG", y = "Frequency")
 
@@ -124,6 +131,8 @@ plot(ford_cars$hwy, ford_cars$cty,
      xlab = "Highway MPG",
      ylab = "City MPG")
 
+# See the next question for the ggplot version of this plot.
+
 ```
 
 
@@ -158,16 +167,102 @@ dev.off()
 
 ```
 
+For this section of the homework, we’re going to state the null and alternate hypotheses for a series of questions, and then we’re going to test the hypotheses with R, and generate a conclusion.
+
+Here is an example:
+
+For her science project, a 9-year-old wants to test whether touch therapists can sense energy from an individual’s hand. She has a touch therapist try to sense above which hand the experimenter has placed her own hand (i.e., either the left or the right hand). The therapist cannot see her hands or the experimenter’s hands because both are behind a barrier. Thus, if the therapist does not have a special power to sense the experimenter’s energy, the outcome should have the expected probability of a coin flip. 
+
+Answer: 
+
+Null/Alternate: 
+
+H0:  = .5
+HA:  ≠ .5
+
+Experiment and Statistical Test:
+
+The 9-year-old has the therapist conduct 1000 trials of this test. Using the binom.test() in R, the result is 522 correct out of 1000 trials (Note: I just made up the numbers, as you should do in the following questions).
+
+binom.test(522,1000, p = 0.5, alternative = "two.sided")
+
+	Exact binomial test
+
+data:  522 and 1000
+number of successes = 522, number of trials = 1000, p-value = 0.1739
+alternative hypothesis: true probability of success is not equal to 0.5
+95 percent confidence interval:
+ 0.4905142 0.5533560
+sample estimates:
+probability of success 
+                 0.522
+
+Conclusion: The probability of 522 correct guesses out of 1000 trials is 0.1739. 
+
+p = 0.1739 > .05. The result is not better than would be expected by chance. We fail to reject the null hypothesis, and conclude that there is no evidence that the therapist can sense the energy of the experimenter’s hand. 
+
+
+
 Below, in each made up experiment, perhaps follow the woman on her repeated visits to the casino as she works through her gambling addiction. Be creative! Maybe the casino is fixing the games? Maybe not?
 
 
 1.	A woman playing craps at the casino thinks both of the dice she is rolling are biased. She wants to roll a two (i.e., a one on each six-sided die, which are independent). State the null and alternate hypothesis she would need to conduct a test of the bias, conduct the test (using an experiment you made up, stating briefly the details), and state the conclusion.
 
+Null/Alternate: 
+
+H0: p = 1/36 = 0.02778
+HA: p < 1/36 = 0.02778
+
+Experiment and Statistical Test: 
+
+The woman rolls the two dice 1000 times as she would during game play. She expects to get 2 ones at 1/36 (1/6 * 1/6) rate. Using the binom.test() in R, the result is 5 winning rolls (as defined by the woman) out of the 1000 rolls in the test. We use the "less" alternative because we primarily care if the dice are biased against her.
+
+```{r}
+binom.test(5, 1000, p = 1/36, alternative = "less")
+```
+
+Conclusion: The probability of 5 winning rolls out of 1000 trials is p=1.102e-07. 
+
+p = 1.102e-07 < .05. We reject the null hypothesis, and conclude that there is significant evidence that the outcome of these rolls is biased against the woman as she is rolling the winning combination much less than one would expect by chance. 
+
+
 2.	The woman is sick of craps and goes to play the slot machine. She wants to get three sevens on the spin, but she thinks the machine is biased. There are 15 images on each of the spinners, and there are three spinners, which act independently. State the null and alternate hypothesis she would need to conduct a test of the bias, conduct the test (using an experiment you made up, stating briefly the details), and state the conclusion.
+
+Null/Alternate: 
+
+H0: p = (1/15)^3 = 0.0002963
+HA: p < (1/15)^3 = 0.0002963
+
+Experiment and Statistical Test: 
+
+The woman, being very frustrated and therefore dedicated, will run the slot machine 10,000 times. She expects to get 3 sevens on the spin 1 out of 3375 spins. Using the binom.test() in R, the result is 2 jackpots out of the 10,000 spins in her test. We use the "less" alternative because we primarily care if the machine is biased against her.
+
+```{r}
+binom.test(2, 10000, p = (1/15)^3, alternative = "less")
+```
+Conclusion: The probability of 2 jackpots out of 10,000 trials is p=0.4315. 
+
+p = 0.4315 > .05. We fail to reject the null hypothesis, and conclude that we lack significant evidence that the outcome of these spins is biased against the woman as her outcomes are within the tolerance of fair probability. 
+
 
 3.	Finding that she can’t win at the slot machine, the woman goes to the poker table. The game they are playing is Texas Hold’Em. In this game, each player is dealt two “hole” cards. At the end of the betting rounds, there will be five more cards on the table. Out of the seven cards (table and hole cards), the player will make the best five-card hand.
 
 She has Ace-King of clubs for her hole cards, and she needs one more club to make a flush. There are 13 clubs in the deck. There are two clubs on the table face up, and two additional non-club cards. On the last (fifth) table card, she does not get a club and loses all of her money. The woman leaves the casino thinking the card game was fixed. State the null and alternate hypothesis she would need to conduct a test of the bias, conduct the test (using an experiment you made up, stating briefly the details), and state the conclusion. 
 
+Null/Alternate: 
 
+H0: p = 9/46 = 0.1956522 The probability of drawing a club if there is no bias in the dealing of cards, meaning the game is fair.
 
+HA: p < 9/46 = 0.1956522 She would care if the game is biased against her (meaning clubs are less likely than expected), which would be p<0.1956522.
+
+Experiment and Statistical Test
+
+The woman will play with this deck 100 times, in which this situation as described occurs. Using the binom.test() in R, we will use the result of 1 game in which she got her clubs out of the 100 rounds in her test. We use the "less" alternative because we primarily care if the machine is biased against her.
+
+```{r}
+binom.test(1, 100, p = 9/46, alternative = "less")
+```
+
+Conclusion: The probability of her getting clubs 1 time over 100 trial games is p=8.87e-09. 
+
+p = 8.87e-09 < .05. We reject the null hypothesis, and conclude that we have significant evidence that the the deck may be biased against the woman as her outcomes are not within tolerance of expected fair probability. 
