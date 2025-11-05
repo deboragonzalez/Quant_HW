@@ -1,0 +1,101 @@
+---
+title: "Homework 7"
+author: "Debi Gonzalez"
+date: "2025-11-05"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# Loading library to run t-tests.
+library(mosaic)
+```
+
+You will need to load library(mosaic) to use the formula method for one sample t tests. 
+
+For each question, first state the null and alternate hypothesis. Then conduct the appropriate test in R. Then state the conclusion based on the test result.
+
+The sleep data set describes 10 people who were given a drug to affect hours of sleep. Type ?sleep to see a description of this data set.
+
+1.	Using the sleep data set that comes with R, test whether the change in sleep (i.e., extra sleep) collapsed across both groups is statistically different from zero.
+
+```{r}
+
+# Exploring my data
+head(sleep)
+
+# Running a one sample t.test using mosaic. Here we’re collapsing across both groups (ignoring the group variable) and test whether the average increase in sleep (extra) is significantly different from zero.
+
+# One-sample t-test using mosaic syntax
+t_test_result <- mosaic::t.test(~ extra, mu = 0, data = sleep)
+t_test_result
+
+```
+
+Null Hypothesis:
+The mean increase in sleep (extra) is equal to zero.
+H0 = uextra = 0
+
+Alternative Hypothesis:
+The mean increase in sleep (extra) is not equal to zero.
+H1 = uextra =/= 0
+
+Because p < 0.05, we reject the null hypothesis. There is a statistically significant increase in sleep duration compared to zero. On average, participants slept about 1.54 hours longer after taking the drug. This suggests the drug significantly affects sleep in the sample.
+
+2.	Using the sleep data in R, assume the group variable labels different people. Conduct a test to determine if the groups differ in the amount of extra sleep.
+
+```{r}
+
+# Independent-sample t-test: In this case, we’re testing whether the mean increase in sleep (extra) differs between group 1 and group 2.
+
+t_test_result2 <- t.test(extra ~ group, data = sleep, var.equal = TRUE)
+t_test_result2
+
+```
+
+Null Hypothesis:
+The mean increase in sleep is the same for both groups.
+H0 = u1 = u2
+
+Alternative Hypothesis:
+The mean increase in sleep differs between groups.
+H1 = u1 =/= u2
+
+Because p > .05, we fail to reject the null hypothesis. There is no statistically significant difference in the average increase in sleep between the two groups (t(18) = -1.86, p = .079), despite the data showing a trend suggesting group 2 may have a larger increase in sleep. This trend is not statistically significant.
+
+
+3.	After you think for a minute, and after more carefully reading the output of ?sleep, you realize the group variable is actually labeling the same people. You conducted the wrong test in question 2! Conduct the correct test to determine if the groups differ in the amount of extra sleep.
+
+```{r}
+
+# The dataset is paired because the group variable does not represent two independent groups of participants. Instead, they are two sets of measurements from the same 10 people who each received both drugs at different times, meaning each ID appears twice.
+
+# Paired t-test. Since group labels are for the same subjects, we need to subset each group.
+
+# Separating the two drug conditions for the same 10 subjects
+drug1 <- subset(sleep, group == 1)$extra # This creates a subset that includes all the extra sleep values for those receiving drug 1 (i.e. group == 1)
+drug2 <- subset(sleep, group == 2)$extra # This creates a subset that includes all the extra sleep values for those receiving drug 2 (i.e. group == 2)
+
+# Paired t-test (correct approach)
+t_test_paired <- t.test(drug1, drug2, paired = TRUE)
+t_test_paired
+
+# The negative mean difference here means that drug 2 (the second condition) produced more extra sleep than drug 1.
+
+```
+
+
+Null Hypothesis:
+The mean difference (ud) in extra (group2 − group1) is 0.
+H0 = ud = 0
+
+Alternative Hypothesis:
+The mean difference (ud) in extra (group2 − group1) is not 0.
+H1 = ud =/= 0
+
+Because p < .05, we reject the null hypothesis. There is a statistically significant difference in the amount of extra sleep between the two drugs. On average, participants experienced 1.58 more hours of extra sleep after taking Drug 2 compared to Drug 1.
+
+4.	Explain why you got a different answer for question 2 and 3, even though the outcome data are the same.
+
+Question 2 (independent samples t-test) treated the groups as independent meaning we assumed that there were different people in each group. In this test, we are comparing the mean of two separate samples and variability is estimated within each group separately, treating each score as unrelated. In Question 3, we realized that the data had the same 10 people tested on each drug, so we used the paired-samples t-test. In this case, we compared within-person differences between Drug 1 and Drug 2, effectively controlling for each individual's baseline variation, allowing us to more appropriately compare the drugs effect.

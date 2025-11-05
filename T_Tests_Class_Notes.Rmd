@@ -1,0 +1,18 @@
+---
+title: "T Tests Class Notes"
+author: "Debi Gonzalez"
+date: "2025-11-05"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Use subset() to help you look at a subset of a data
+
+y <- subset(sleep, group ==1)$extra
+
+In this case we are subsetting those values of extra that have group == 1.
+
+t.test(x, y, paired = TRUE)
