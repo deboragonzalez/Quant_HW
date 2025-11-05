@@ -1,0 +1,120 @@
+---
+title: "Homework 6"
+author: "Debi Gonzalez"
+date: "2025-11-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(swirl)
+library(ggplot2)
+```
+
+In R, 
+
+library(swirl)
+swirl()
+
+When prompted, select Exploratory Data Analysis. It may help to read the questions first as you go through swirl(), so you can answer them as you learn the material.
+
+Skipping 5-7, work through 
+
+8: GGPlot2 Part1
+9: GGPlot2 Part2
+10: GGPlot2 Extras
+
+and answer the following questions:
+
+1)	Type play() and load the library(ggplot2). Using qplot(), plot Sepal.Length (x axis) and Sepal.Width (y axis) of the iris dataset, with Species as the color. Add trend lines for each Species. Paste the command and the plot here. (Hint: In the plot window, you can press Export and Copy Plot to paste it here).
+
+
+```{r}
+
+# ggplot2 already loaded above
+
+# Use qplot() to plot Sepal.Length vs Sepal.Width with Species as color
+qplot(Sepal.Length, Sepal.Width, data = iris, color = Species) +
+  geom_smooth(method = "lm", se = FALSE)
+
+
+# Since qplot() was deprecated in ggplot2 3.4.0, I want to build it using ggplot()
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+  # Selecting the data, axis variables, and color
+  geom_point() +
+  # This tells ggplot we are plotting the scatter points
+  geom_smooth(method = "lm", se = FALSE) +
+  # Here we add the lines
+  labs(title = "Sepal Length vs Width by Species",
+       x = "Sepal Length",
+       y = "Sepal Width") +
+  # Adding labels to the graph
+  theme_minimal()
+  # Selecting aesthetics
+
+```
+
+2)	In your own words, what does 
+
+, facets = . ~ Species) 
+
+mean in a qplot() call? 
+
+
+In a qplot() call, the above code tells R that we are splitting the plot into several panels based on the variable 'Species'. The tilde (~) separates rows (left side) and columns (right side) in the facet layout. The dot (.) means “don’t split in that direction.” Putting Species on the right means “make separate columns for each Species.”
+
+
+3)	You just spent some time learning qplot(), but you’ll likely never use it. You’ll use ggplot2 from now on. What are the seven basic components of ggplot2 plots?
+
+The seven basic components of a ggplot2 plot are:
+
+* Data – the dataset you want to visualize. (i.e. 'iris' like we did above)
+
+* Aesthetics (aes) – how variables are mapped to visual properties (like x and y axis, color, size).
+
+* Geometries (geoms) – the type of plot elements (points, lines, bars, etc.).
+
+* Facets – optional panels that split data into multiple plots based on variables (could be columns or rows).
+
+* Statistics (stats) – optional transformations or summaries of data (like smoothing lines or counts).
+
+* Coordinates (coords) – how data are positioned on the plot (like Cartesian or polar coordinates).
+
+* Theme – overall look and style of the plot (background, fonts, gridlines, etc.).
+
+4)	Make a ggplot object with the mapping:  x = ~Sepal.Length, y = ~Sepal.Width. Then make a scatterplot with regression lines separated by Species, with the plot title “Swirl Rules!”. Paste the command and the plot here.
+
+```{r}
+
+# Creating ggplot object with requested mapping 
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+  # Telling R that it's meant to be a scatterplot
+  geom_point() +
+  # Adding regression lines to the plot
+  geom_smooth(method = "lm", se = FALSE) +
+  # Adding labels, including title and axis
+  labs(title = "Swirl Rules!",
+       x = "Sepal Length",
+       y = "Sepal Width") +
+  theme_minimal()
+
+```
+
+
+5)	Using qplot, make a histogram of Sepal.Length from data = iris. Paste the command and the plot here. Next, using qplot make a density plot of Sepal.Length from data = iris. Paste the command and plot below the histogram. Please answer what the different plots tell you (i.e., what is the difference between a frequency histogram and a probability density function?). 
+
+
+```{r}
+
+# Histogram of Sepal.Length
+qplot(Sepal.Length, data = iris, bins = 20, main = "Histogram of Sepal.Length")
+
+# Density plot of Sepal.Length
+qplot(Sepal.Length, data = iris, geom = "density", main = "Density Plot of Sepal.Length")
+
+
+```
+
+
+The histogram tells us how many of something (in this case flowers) occurs in each range (of length, in this case). The density plot tells us how likely a value is to occur (probability distribution of sepal lengths in this case), emphasizing the shape of the distribution rather than counts. In the histogram, the height of each bar represents how many data points are in that range. It’s discrete and depends on bin width. In the density plot, the area under the curve equals 1, not the total number of observations. It provides a smoothed view of the distribution’s shape.
