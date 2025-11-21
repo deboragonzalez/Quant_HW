@@ -1,0 +1,48 @@
+---
+title: "Quiz"
+author: "Debi Gonzalez"
+date: "2025-11-12"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+
+library(mosaic)
+toddhotdogs <- c(22,29,18,23,19, 22, 25, 28, 19, 18)
+
+mean(toddhotdogs)
+sd(toddhotdogs)
+
+t_test_result <- mosaic::t.test(~ toddhotdogs, mu = 22)
+t_test_result
+```
+
+```{r}
+
+mikihotdogspre <- c(32, 30, 28, 20, 22, 28, 25, 19, 19, 22)
+
+mikihotdogspost <- c(33, 35, 37, 28, 29, 28, 29, 33, 31, 29)
+
+mean(mikihotdogspre)
+mean(mikihotdogspost)
+
+sd(mikihotdogspre)
+sd(mikihotdogspost)
+
+t_test_paired <- t.test(mikihotdogspost, mikihotdogspre, paired = TRUE)
+t_test_paired
+
+```
+
+d is the difference between the scores, d with the little dash is the mean of the differences.
+SS -- sum of squares; easiest way to find is to multiply variance of differences and multiply by n-1
