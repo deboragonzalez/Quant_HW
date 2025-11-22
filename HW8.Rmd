@@ -38,10 +38,10 @@ A Welch two-sample t-test indicated that CBCL anxiety T-scores did not differ si
 2)	Using a t.test(), examine whether CBCL anxiety scores are different, on average, from the clinical cutoff of 69. Are these children significantly more anxious than the standard cutoff? For this question, first state the null and alternate hypothesis. Then conduct the appropriate test in R (using the suggested command). Print the command and the output. Then state the conclusion based on the test result.
 
 Null Hypothesis: Sample Mean == 69  
-The mean CBCL anxiety score for males equals the mean CBCL anxiety score for females.
+The mean CBCL anxiety score is equal to the clinical cutoff of 69.
 
 Alternate Hypothesis:  Sample mean =/= 69  
-The mean CBCL anxiety score differs between males and females.
+The mean CBCL anxiety score is not equal to the clinical cutoff of 69.
 
 Test: One Sample T-Test
 
@@ -64,17 +64,40 @@ avPlots(model1)
 
 Print the output here (the summary and the plot). Ignore the intercept for now. Note the output for agemonths has 1) an estimate (in this case, it is the slope of the regression line); 2) a standard error of the estimate; 3) a t value; 4) a p value. 
 
+```{r}
+# adding the suggested code to build the model and show the results summary and plot.
+
+library(car)
+
+model1 <- lm(cbcl_anxiety_t ~ agemonths, data = cbcl)
+
+summary(model1)
+avPlots(model1)
+```
+
+
 Now, 
 a) take the value of the slope and subtract zero from the that value (i.e., slope – 0). Print that value here. This shows how different the slope is from zero (i.e., is it different from a flat line having no slope? The null hypothesis would be that the slope (B) = 0); 
+
+```{r}
+-0.04019-0
+```
+
 b) Take that difference score and divide it by the standard error from the output. Print that value here. 
+```{r}
+-0.04019/0.04909
+```
+
+
 c) Compare that value to the t statistic from the output. Are they the same or different?
 
+We manually calculated the t-statistic t = (estimate − null value)/standard error. Once rounded, the numbers match exactly (-0.819).
 
 4)	Using a t.test(), examine whether Child Behavior Checklist (CBCL) anxiety scores are different, on average, between males and females, but this time turn off the Welch correction (put var.equal = TRUE). You can just paste the R command and output here (no need to state the null hypothesis etc.).
 
 ```{r}
 
-# Independent samples t-test comparing CBCL anxiety scores by sex with "equal variances"; ommiting the Welch correction
+# Independent samples t-test comparing CBCL anxiety scores by sex with "equal variances"; omiting the Welch correction
 
 mosaic::t.test(cbcl_anxiety_t ~ birthsex, data = cbcl, var.equal = TRUE)
 ```
@@ -87,13 +110,59 @@ avPlots(model2)
 
 Paste the R output here. 
 
+```{r}
+model2 <- lm(cbcl_anxiety_t ~ birthsex, data = cbcl)
+summary(model2)
+avPlots(model2)
+```
+
+
 First examine the plot. Compare that plot to the one examining age in months as the predictor. Note the predictor is categorical for birth sex, whereas age in months is continuous.
 
 Now, compare the linear model output with the output in question 4. Specifically, compare:
 
 a)	Calculate the mean difference for males and females from the t.test() output. Compare that with the value of the slope from the linear model. Print both here.
+
+```{r}
+# Based on the t-test, the female mean is 53.32 and male mean is 54.40
+# The difference
+54.40-53.32
+
+# The slope of the linear model is 1.0800.
+```
+
+The difference of means between males and females in the t.test output and the slope of the linear model of the relationship between birth sex and CBCL anxiety score are the same (1.08).
+
 b)	Compare the t value and p value from the t.test() output to the t value and p value from the linear model output. Print both here.
+
+T-Test Values
+t = -0.87519, p-value = 0.3836
+
+Linear Model Values 
+t=  0.875, p-value: 0.3836
+
+The values match! I believe the flipped signs have to do with the way the t-test ordered the categorical variables in its formula.
+
 c)	Take the square root of the F-statistic from the linear model output. Compare it to the t value from both the t.test() and the linear model output. Print all three here.
+
+```{r}
+
+# the f-statistic is 0.766
+
+# taking square root
+sqrt(0.766)
+
+```
+
+T-Test Values
+t = -0.87519
+
+Linear Model Values 
+t=  0.875
+
+These values all match when rounded to third decimal place!
+
+
 d)	Compare the group differences between males and females on the CBCL anxiety scores using an Analysis of Variance (ANOVA). The command in R is aov() and uses the same formula interface you have been using.
 
 So, paste the following into R:
@@ -101,9 +170,39 @@ So, paste the following into R:
 model3 <- aov(cbcl_anxiety_t ~ birthsex, data = cbcl_data)
 summary(model3)
 
+```{r}
+# Creating the anova model as provided
+model3 <- aov(cbcl_anxiety_t ~ birthsex, data = cbcl)
+summary(model3)
+```
+
 Compare the F and p values for the ANOVA with the F and p values from the linear model. Print both here.
+
+Linear Model
+F-statistic: 0.766 on 1 and 98 DF,  p-value: 0.3836
+
+Anova
+F Value: 0.766; p-value: 0.384
+
+Once again, the values align!
 
 6)	Now, using the same logic, conduct an ANOVA, but this time instead of birth sex, use age group as the predictor. Is there a statistically significant difference among the age groups for CBCL anxiety scores? Print your conclusion and the R output here.
 
+```{r}
+model4 <- aov(cbcl_anxiety_t ~ agegroup, data = cbcl)
+summary(model4)
+```
+
+
+There is no statistically significant difference in CBCL anxiety T-scores across age groups F(4,95)=0.796,p=.53.
+
 7)	Finally, conduct the same analysis as in 6), but use the linear model. Print the output and the plot here.
 
+```{r}
+model5 <- lm(cbcl_anxiety_t ~ agegroup, data = cbcl)
+summary(model5)
+avPlots(model5)
+```
+
+
+None of the p-values are significant, so no age group differs significantly from the reference group. The linear model confirms that there are no statistically significant differences in CBCL anxiety T-scores across age groups, F(4,95)=0.796,p=.53.
