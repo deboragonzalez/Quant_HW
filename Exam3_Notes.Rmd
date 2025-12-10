@@ -1,0 +1,272 @@
+---
+title: "Exam 3 Notes"
+author: "Debi Gonzalez"
+date: "2025-12-09"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# loading datasets library
+library(datasets)
+
+# Helper package
+library(fastR2)
+# post hoc analysis package
+library(emmeans)
+
+# Library to run glht command for tukey test
+library(multcomp)
+
+# Testing with Anthony's example
+
+# Fit a linear model with interaction
+model <- lm(score ~ scr * liq, data = TasteTest)
+
+# Calculate estimated marginal means for the interaction
+emmeans_results <- emmeans(model, ~ scr * liq)
+
+# Perform Tukey-adjusted pairwise comparisons for the interaction
+tukey_results <- pairs(emmeans_results, adjust = "tukey")
+
+# Print the Tukey-adjusted results
+print(tukey_results)
+
+```
+
+6.	Examine the dataset survey, which contains information about university students. We are interested in two factors, Sex and Exer (frequency of exercise), and their association with Pulse. Additionally, we are interested in whether Sex moderates the association between Exer and Pulse.
+•	Dependent Variable: Pulse (students' resting heart rate)
+•	Factors:
+o	Sex (2 levels: Female, Male)
+o	Exer (3 levels: None, Some, Frequent)
+Analyze these data using the most appropriate approach.
+
+a.	State the research question or questions (1 point). 
+
+* Main effect of exercise: Do students’ mean resting Pulse rates differ across the three exercise-frequency groups (None, Some, Frequent)?
+
+* Main effect of sex: Do students’ mean resting Pulse rates differ between Female and Male students?
+
+* Moderation / interaction (the key “moderates” question): Does the relationship between exercise frequency and resting Pulse depend on Sex? (Equivalently: Is there a Sex × Exer interaction such that the difference in mean Pulse across exercise groups is not the same for females and males?)
+
+b.	Conduct the analysis (6 points).
+
+```{r}
+# library needed for survey dataset
+library(MASS)
+
+# Running the two-way ANOVA
+
+model_survey <- lm(Pulse ~ Exer * Sex, data = survey)
+anova(model_survey)
+
+# Because the interaction isn’t significant, the appropriate follow-up is to interpret the main effect of Exer and (optionally) run post-hoc pairwise comparisons among the three Exer levels (Tukey-adjusted) to see which groups differ:
+
+```
+
+```{r}
+
+# Post hoc testing directly from original model
+emmeans_results <- emmeans(model_survey, ~ Exer)
+
+tukey_results1 <- pairs(emmeans_results, adjust = "tukey")
+print(tukey_results1)
+
+# this is the same thing, but just putting the emmeans results directly into the pairs command for tukey post hoc
+tukey_results <- pairs(emmeans(model_survey, ~ Exer), adjust = "tukey")
+print(tukey_results)
+
+```
+
+
+
+```{r}
+# Alternative: refit the model given sex has no interaction and post hoc test 
+survey_model2 <- lm(Pulse ~ Exer + Sex, data = survey)
+
+# Tukey post-hoc using glht
+summary(glht(survey_model2, linfct = mcp(Exer = "Tukey")))
+
+# Tukey post-hoc for Exer adjusted for Sex
+pairs(emmeans(survey_model2, ~ Exer), adjust = "tukey")
+```
+
+c.	State the conclusion with a precise statement about the direction of effects (note: This may or may not require post-hoc tests and/or multiple comparison correction). (2 points)
+ANOVA Conclusion: 
+
+Main effect of Exer is significant:
+F(2,185)=3.39, p=0.0359F(2,185)=3.39, p=0.0359.
+Conclusion: Average resting Pulse differs somewhere across the three exercise groups (None, Some, Frequent), when averaging over Sex.
+
+Main effect of Sex is not significant:
+F(1,185)=0.76, p=0.3846F(1,185)=0.76, p=0.3846.
+Conclusion: No evidence that mean resting Pulse differs overall between females and males (averaged over Exer).
+
+Exer × Sex interaction is not significant:
+F(2,185)=1.93, p=0.1486F(2,185)=1.93, p=0.1486.
+Conclusion: No evidence that Sex moderates the relationship between Exer and Pulse. In other words, the pattern of exercise-related differences in Pulse does not significantly differ for females vs males.
+
+
+Tukey-adjusted pairwise comparisons:
+
+Freq vs None: p = 0.4317 (not significant)
+
+Freq vs Some: p = 0.0771 (not significant; closest/trending)
+
+None vs Some: p = 0.9999 (not significant)
+
+Conclusion from post-hoc:
+Even though the omnibus ANOVA indicates an overall Exer effect, the Tukey-adjusted follow-ups do not identify any specific pair of exercise groups that differ at α = .05. The largest (closest) contrast suggests that students who exercise frequently tend to have a lower Pulse than those who exercise some (estimate ≈ −3.87 bpm), but this does not reach significance after Tukey correction.
+
+ANOVA showed a significant main effect of exercise frequency on resting pulse, F(2,185)=3.39, p=0.036F(2,185)=3.39, p=0.036, but no main effect of sex, F(1,185)=0.76, p=0.385F(1,185)=0.76, p=0.385, and no Sex × Exer interaction, F(2,185)=1.93, p=0.149F(2,185)=1.93, p=0.149. Thus, sex did not moderate the association between exercise frequency and pulse. Tukey-adjusted post-hoc tests did not reveal significant pairwise differences among the three exercise groups (all p>.05p>.05), although the difference between Frequent and Some exercise showed the strongest trend (p = 0.077), with frequent exercisers having a lower pulse on average. The overall Exer effect is detectable, but no single pairwise difference is large enough to survive Tukey’s multiple-comparison adjustment (especially given unequal group sizes/SEs).
+
+
+7. Examine the dataset PlantGrowth, which contains information about the effect of different treatments on plant weight. We are interested in whether plant weights differ by treatment group.
+
+•	Dependent Variable: weight (plant weight in grams)
+•	Independent Variable: group (3 levels: ctrl, trt1, trt2) where ctrl is the control group and trt1 and trt2 are different treatments.
+
+a.	State the research question or questions (1 point).
+
+Does plant weight differ based on the treatment?
+
+b.	Conduct the analysis (6 points).
+
+```{r}
+
+# Creating one-way ANOVA to determine if there is a difference in weight based on treatment group
+model_plant <- lm(weight ~ group, data = PlantGrowth)
+anova(model_plant)
+
+# Now we run the post-hoc test with a multiple comparison corrections
+
+summary(glht(model_plant, linfct = mcp(group = "Tukey"))) # defines multiple comparison correction for Tukey, for the factor "group"
+
+```
+c.	State the conclusion with a precise statement about the direction of effects (note: This may or may not require post-hoc tests and/or multiple comparison correction). (2 points)
+
+A one-way analysis of variance (ANOVA) revealed a main effect of group, F(2, 27) = 4.85, p = .015. Tukey honestly significant difference (HSD) post-hoc tests revealed that only treatment 1 and 2 differed from each other, with treatment 2 showing a higher weight/crop yield than treatment 1. The differences between treatment 1 and the control group, and treatment 2 and the control group, were not statistically significant. 
+
+8.	Examine the dataset mtcars, which contains data about various car models. We are interested in the association between the number of cylinders (cyl) and miles per gallon (mpg). 
+•	Dependent Variable: mpg (miles per gallon).
+•	Independent Variable: cyl (number of cylinders: 4, 6, 8).
+
+a.	State the research question or questions (1 point).
+
+Do miles per gallon of the cars differ based on the number of cylinders the car has?
+
+b.	Conduct the analysis (6 points).
+
+```{r}
+
+# This is another one-way anova
+# first need to make cyl into a factor/categorical variable
+# Make cyl a factor (3 groups: 4, 6, 8)
+mtcars$cyl <- factor(mtcars$cyl)
+
+# Now on to the model
+model_cars <- lm(mpg ~ cyl, data = mtcars)
+anova(model_cars)
+
+# Now, running post hoc to see how the cylinder categories differ
+summary(glht(model_cars, linfct = mcp(cyl = "Tukey")))
+```
+c.	State the conclusion with a precise statement about the direction of effects (note: This may or may not require post-hoc tests and/or multiple comparison correction). (2 points)
+
+A one-way ANOVA indicated that mpg differed by cylinder count, F(2,29)=39.70, p<.001. Tukey post-hoc tests showed that 4-cylinder cars had higher mpg than both 6-cylinder (mean difference = 6.92 mpg, p<.001) and 8-cylinder cars (mean difference = 11.56 mpg, p<.001), and 6-cylinder cars also had higher mpg than 8-cylinder cars (mean difference = 4.64 mpg, p=.011).
+
+9.	Analyze the same mtcars data, adding gear (number of forward gears: 3, 4, 5) as a factor. Examine whether gear moderates any differences in mpg associated with cyl.
+
+a.	State the research question or questions (1 point).
+	Do miles per gallon of the cars differ based on the number of cylinders the car has?
+	Do miles per gallon of the cars differ based on the number of forward gears?
+	Do miles per gallon of the cars differ based on the interaction between number of cylinders and number of forward gears?
+b.	Conduct the analysis (6 points).
+```{r}
+# First, we need to add gears as a factor, so:
+mtcars$gear <- factor(mtcars$gear)
+mtcars$cyl <- factor(mtcars$cyl)
+# Cyl was already made a factor variable
+
+# Now, on to the two-way ANOVA
+model_cars2 <- lm(mpg ~ cyl * gear, data = mtcars)
+anova(model_cars2)
+
+# Conclusions from Two Way ANOVA: Moderation (cyl × gear): not significant, F(3,24)=0.71, p=0.555F(3,24)=0.71, p=0.555. → Gear does not moderate the cyl–mpg relationship.Main effect of gear: not significant, F(2,24)=0.37, p=0.696F(2,24)=0.37, p=0.696. → No evidence mpg differs across 3/4/5 gears after accounting for cyl. Main effect of cyl: significant, F(2,24)=36.78, p=4.92×10−8F(2,24)=36.78, p=4.92×10−8. → mpg differs across 4/6/8 cylinders (adjusted for gear).
+
+# Tukey pairwise comparisons among cylinder groups
+pairs(emmeans(model_cars2, ~ cyl), adjust = "tukey")
+
+```
+c.	State the conclusion with a precise statement about the direction of effects (note: This may or may not require post-hoc tests and/or multiple comparison correction). (2 points)
+
+Conclusion: A two-way ANOVA found a strong main effect of cylinders on mpg, but no main effect of gear and no cyl×gear interaction (no moderation). Because the cyl×gear table is sparse (some cyl–gear combinations are absent), some marginal means and Tukey contrasts for cyl adjusted for gear are not estimable; the only adjusted contrast that could be estimated showed 4-cyl cars had higher mpg than 6-cyl cars (Δ ≈ 5.81 mpg, p = .009). Overall, the data do not support the claim that gear moderates the cylinder–mpg relationship.
+
+
+Other Practice Problems:
+
+Here is a simple 2 x 2 Design. This data set imagines participants are participating in a memory experiment. It has two levels of Task (Verbal, Spatial), and two levels of memory Load (Low, High). Performance is the outcome measure. Different people are in each cell of the design (n = 400). Because the predictors are qualitative/categorical, ANOVA is appropriate.
+
+
+a.	State the research question or questions.
+
+Is there a difference in performance between tasks? Is there a difference in performance between load levels? Is there a task by load interaction? 
+
+```{r}
+# We create the dataset based on instructions
+
+# Set seed for reproducibility
+set.seed(123)
+
+# Define levels for Task and Load
+task_levels <- c("Verbal", "Spatial")
+load_levels <- c("Low", "High")
+
+# Set the number of subjects per cell
+subjects_per_cell <- 100
+
+# Create an empty data frame
+full_design <- data.frame()
+
+# Generate data for each combination of Task and Load
+for (task in task_levels) {
+  for (load in load_levels) {
+    # Simulate data for each subject
+    subject_data <- data.frame(
+      Subject = 1:subjects_per_cell,
+      Task = factor(rep(task, subjects_per_cell), levels = task_levels),
+      Load = factor(rep(load, subjects_per_cell), levels = load_levels),
+      Performance = rnorm(subjects_per_cell, 
+                          mean = ifelse(task == "Verbal", 70, 75), 
+                          sd = 5)
+    )
+    
+    # Append the data to the full design
+    full_design <- rbind(full_design, subject_data)
+  }
+}
+
+# Now we build our two-way anova
+
+model_2factor <- lm(Performance ~ Task * Load, data = full_design) # run the model in the lm framework
+anova(model_2factor) # report the ANOVA table for the omnibus test
+
+
+# in this case we do not need to do a post hoc test because there are only two levels in each factor, so if the ANOVA table says the factor is significant, you already know that the difference is between the two levels of the factor. But if we wanted to examine post-hoc tests in another situation, the syntax would be:
+
+global_hypothesis <- glht(
+    model_2factor,
+    linfct = mcp(Task = "Tukey", Load = "Tukey")
+)
+
+# Perform the test
+tukey_results <- summary(global_hypothesis)
+
+# Display the results
+print(tukey_results)
+
+```
+c.	State the conclusion with a precise statement about the direction of effects (note: This may or may not require post-hoc tests and/or multiple comparison correction).
+
+Conclusion: A two-way analysis of variance (ANOVA) revealed a main effect of Task, F(1, 396) = 117.77, p < .001, with better performance on the Spatial task. There was no effect of Load (F(1, 396) = 3.35, p = 0.07), and no significant interaction (F(1, 396) = 0.05, p = 0.83).

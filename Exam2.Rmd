@@ -1,0 +1,65 @@
+---
+title: "Exam 2"
+author: "Debi Gonzalez"
+date: "2025-12-03"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+
+```{r}
+# Loading necessary library
+library(mosaic)
+```
+
+
+```{r q9}
+
+# Question 9
+# Create a data frame
+UM_data <- data.frame(scores = c(1,4,3.1,5,8,7,6.1,7,8,11.2))
+
+#View the data
+print(UM_data)
+
+# Running the one sample t-test with mu = 8 because that's the given population average
+
+t_test(~scores, mu = 8, data = UM_data)
+
+```
+
+
+```{r q10}
+
+# Checking out the galton dataset
+
+print(Galton)
+
+# Upon exploring the dataset, the variables needed are sex and height.
+
+# Running the two independent samples t-test
+t_test(height~sex, data = Galton)
+
+
+```
+
+
+```{r q11}
+
+# Checking out the mtcars dataset
+?mtcars
+
+# We have mpg -- a numerical variable and am -- a binary variable with 0 meaning automatic and 1 manual.
+
+print(mtcars)
+
+# Running the two indepdent sample t-test
+
+t_test(mpg~am, data = mtcars)
+```
+
+

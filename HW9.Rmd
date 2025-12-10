@@ -1,0 +1,192 @@
+---
+title: "Homework 9"
+author: "Debi Gonzalez"
+date: "2025-11-22"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(mosaic)
+
+cbcl <- read.csv("cbcl_data.csv")
+```
+
+
+You will need to load library(mosaic).
+
+1.	Load the cbcl_anxiety data set (same as Homework 8).
+
+Use the favstats() command to take a look at the means for each level of the age group variable. Note, since we loaded the mosaic() library, we can use the formula method throughout.
+
+```{r}
+
+# taking a look at each variable level
+favstats(cbcl_anxiety_t~agegroup, data = cbcl)
+```
+
+
+Let’s run a one-way ANOVA to address the following null/alternate hypothesis for age group differences on CBCL Anxiety t scores:
+
+H0: µ1 = µ2 = µ3 = µ4 = µ5
+HA: µ1 ≠ µ2 ≠ µ3 ≠ µ4 ≠ µ5 (or, at least one µi is not equal to the other means)
+
+This is an omnibus test (it tests whether there is a difference somewhere)
+
+Use the anova() function to print the ANOVA table for the age group variable. You can do this by specifying the linear model, pushing that result into an object, and then run the anova() function on the object. 
+
+Report the command, the R output, and the conclusion based on the R output.
+
+For example, if y = dependent variable, and x = independent variable, the procedure is:
+
+model1<-lm(y~x, data = data)
+anova(model1)
+
+
+```{r}
+model1<-lm(cbcl_anxiety_t~agegroup, data = cbcl)
+anova(model1)
+```
+
+F(4, 95) = 0.80, p = 0.5304
+
+Conclusion: Because the p-value is greater than .05, we fail to reject the null hypothesis. There is no statistically significant difference in CBCL Anxiety T-scores between the five age groups.
+
+2.	We can also look at the interaction between two factors. We use the * to specify an interaction. The model will now report the main effect of the first variable, the main effect of the second variable, and the interaction effect. Do this to examine the interaction between the categorical (factor) variables agegroup and birthsex. Note agegroup has 5 levels, and birthsex has 2 levels, so this is called a 5 x 2 factorial ANOVA.
+
+model2<-lm(y~x*z, data = data)
+anova(model2) # Note, you could also load library(car) and run the Anova() wrapper to deal with Type I, II, or III issues
+
+We can also examine the plot.
+
+gf_boxplot(cbcl_anxiety_t ~ as.factor(agegroup) | birthsex, data = cbcl_data)
+
+ 
+Figure 1.
+
+Report the command, the R output, and the conclusion based on the R output and examination of the plot.
+
+```{r}
+
+# Creating the model with the interaction
+model2<-lm(cbcl_anxiety_t~agegroup*birthsex, data = cbcl)
+anova(model2)
+
+# Examining the plot
+gf_boxplot(cbcl_anxiety_t ~ as.factor(agegroup) | birthsex, data = cbcl)
+```
+
+Conclusion: From the main effects of this ANOVA, we find that CBCL Anxiety T-scores do not significantly differ across the 5 age groups (F(4, 90) = 0.806, p = 0.5247) and that males and females do not differ significantly in mean anxiety T-scores (F(1, 90) = 0.663, p = 0.4178). With regards to the interaction effect (F(4, 90) = 1.364, p = 0.2528), we fail to reject the null, there is no statistically significant effect of age group on anxiety T-scores based on birth sex. The plot seems to support this conclusion.
+
+
+
+3.	Now we’re going to conduct some factorial ANOVA with the diet data set.
+
+
+```{r}
+# Running the library
+library(WRS2)
+
+# Data exploration
+?diet
+
+str(diet)
+```
+
+Type ?diet to examine the variables.
+Type str(diet) to identify which are factors and which are quantitative variables. Let’s examine the diet.type x gender factorial ANOVA (a 3 x 2 ANOVA).
+
+favstats(weight.loss~diet.type, data = diet)
+favstats(weight.loss~gender, data = diet)
+
+
+We can also examine the plot.
+
+gf_boxplot(weight.loss~diet.type | gender, data = diet)
+ 
+Figure 2.
+
+
+Run the two factor diet.type x gender ANOVA. Report the command, the R output, and the conclusion based on the R output.
+
+
+```{r}
+
+# Descriptive stats
+favstats(weight.loss~diet.type, data = diet)
+favstats(weight.loss~gender, data = diet)
+
+# Building the model (two-way ANOVA)
+model3 <- lm(weight.loss ~ diet.type * gender, data = diet)
+anova(model3)
+```
+
+
+```{r}
+# The plot
+gf_boxplot(weight.loss~diet.type | gender, data = diet)
+```
+
+
+Conclusion: From the main effects of this ANOVA, we find that different diets produce different amounts of weight loss, meaning that at least one diet differs from the others significantly (F(2,70) = 5.63, p = 0.0054). We also find that males and females do not differ significantly in overall weight loss (F(1,70) = 0.031, p = 0.86). With regards to the interaction effect Diet Type × Gender (F(2,70) = 3.15, p = 0.0488), we reject the null hypothesis that there is no interaction and find that the effect of diet type depends on gender significantly.
+
+
+4.	In the previous example, we found a main effect of diet.type, and a diet.type by gender interaction. We should not interpret the main effect of diet.type in the context of an interaction, but we should interrogate the source of the interaction. Examining Figure 2, there appears to be an effect of diet type, but only for females (hence the significant interaction). However, we need to determine if what we are seeing visually is statistically significant. 
+
+To do this, we can run models after subsetting the data and examine the diet.type difference within males, and within females.
+
+model.female<-lm(weight.loss~diet.type, data = diet, subset = gender == "Female")
+anova(model.female)
+
+Run this model and report the output. What is your conclusion? Please state it here.
+
+```{r}
+# Setting up the female subset model
+
+model.female<-lm(weight.loss~diet.type, data = diet, subset = gender == "Female")
+anova(model.female)
+```
+Conclusion (female model): Among females, the type of diet significantly affects weight loss F(2, 40) = 10.64, p = 0.0001971 (highly significant p value; reject the null). This means not all diets produce the same amount of weight loss for women—some diets lead to significantly greater weight loss than others.
+
+We can do the same within males.
+
+model.male<-lm(weight.loss~diet.type, data = diet, subset = gender == "Male")
+anova(model.male)
+
+Run this model and report the output. What is your conclusion? Please state it here. 
+
+```{r}
+
+# Setting up the male subset model
+model.male<-lm(weight.loss~diet.type, data = diet, subset = gender == "Male")
+anova(model.male)
+```
+Conclusion: Among males, diet type does not significantly affect weight loss, F(2, 30) = 0.148, p = 0.863. All three diets lead to similar weight loss for men.
+
+Examine Figure 2 for this data set. Note that there are three levels of diet.type. We found an omnibus effect of diet.type only for Females.
+
+Now we have to look to see where the differences are. We can do this with a multiple comparison procedure. Let’s try the Tukey Post-Hoc procedure as below.
+
+library(multcomp)
+summary(glht(model.female, linfct = mcp(diet.type = "Tukey")))
+
+Please run this and report the output below. Looking at the output, and referencing the Figure, overall what can we conclude?
+
+```{r}
+
+# Setting up library needed for Tukey Post-Hoc procedure
+library(multcomp)
+
+# Running and summarizing the Tukey Post-Hoc procedure
+summary(glht(model.female, linfct = mcp(diet.type = "Tukey")))
+```
+The Tukey test confirmed what Figure 2 had suggested, which was that Diet C had the largest weight loss for females while Diet A and B were lower and similar. The Figure also suggested the changes in weight loss across diet for males was not as dramatic.
+
+-- Diet B vs. Diet A: Estimate = −0.44, p = 0.841 --> Not significant --> Females lose a similar amount of weight on Diet A and Diet B.
+
+-- Diet C vs. Diet A: Estimate = +2.83, p = 0.002 --> Significant --> Females on Diet C lose significantly more weight than those on Diet A.
+
+-- Diet C vs. Diet B: Estimate = +3.27, p < 0.001 --> Significant --> Females on Diet C lose significantly more weight than those on Diet B.
+
+The difference in weight loss across diets in females is responsible for the diet.type × gender interaction because males did not show this pattern.
